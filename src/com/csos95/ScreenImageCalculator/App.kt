@@ -90,7 +90,7 @@ class App : Application() {
             }
             imageDiagonalMeasurement = Math.sqrt(Math.pow(imageWidthMeasurement, 2.0) + Math.pow(imageHeightMeasurement, 2.0))
 
-            maxImageDiagonal.text = imageDiagonalMeasurement.toString()
+            maxImageDiagonal.text = "%.2f".format(imageDiagonalMeasurement)
         }, x = 0, y = 6)
 
         primaryStage.scene = Scene(layout, 400.0, 300.0)
