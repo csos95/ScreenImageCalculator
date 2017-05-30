@@ -22,17 +22,17 @@ class App : Application() {
 
         //screen inputs
         layout.addLabel("Screen Diagonal", x = 0, y = 0)
-        val screenDiagonalInput = layout.addFloatField(x = 1, y = 0)
+        val screenDiagonalInput = layout.addTextField(x = 1, y = 0)
         layout.addLabel("Screen Ratio Width", x = 0, y = 1)
-        val screenWidthInput = layout.addIntField(x = 1, y = 1)
+        val screenWidthInput = layout.addTextField(x = 1, y = 1)
         layout.addLabel("Screen Ratio height", x = 0, y = 2)
-        val screenHeightInput = layout.addIntField(x = 1, y = 2)
+        val screenHeightInput = layout.addTextField(x = 1, y = 2)
 
         //image inputs
         layout.addLabel("Image Width", x = 0, y = 3)
-        val imageWidthInput = layout.addIntField(x = 1, y = 3)
+        val imageWidthInput = layout.addTextField(x = 1, y = 3)
         layout.addLabel("Image height", x = 0, y = 4)
-        val imageHeightInput = layout.addIntField(x = 1, y = 4)
+        val imageHeightInput = layout.addTextField(x = 1, y = 4)
 
         //image diagonal output
         layout.addLabel("Image Diagonal", x = 0, y = 5)
@@ -41,16 +41,16 @@ class App : Application() {
         //this is all really ugly now, but it seems to be correct.
         //TODO cleanup
         layout.addButton("Calculate", EventHandler {
-            val screenDiagonalMeasurement = screenDiagonalInput.text.toDouble()
-            val screenWidthPixels = screenWidthInput.text.toInt()
-            val screenHeightPixels = screenHeightInput.text.toInt()
+            val screenDiagonalMeasurement = screenDiagonalInput.text.toDoubleOrNull() ?: 0.0
+            val screenWidthPixels = screenWidthInput.text.toIntOrNull() ?: 0
+            val screenHeightPixels = screenHeightInput.text.toIntOrNull() ?: 0
 
             val screenRatio = screenWidthPixels.toDouble() / screenHeightPixels.toDouble()
             val screenWidthMeasurement = screenRatio * Math.sqrt( Math.pow(screenDiagonalMeasurement, 2.0) / (Math.pow(screenRatio, 2.0) + 1 ) )
             val screenHeightMeasurement = Math.sqrt( Math.pow(screenDiagonalMeasurement, 2.0) / (Math.pow(screenRatio, 2.0) + 1) )
 
-            val imageWidthPixels = imageWidthInput.text.toDouble()
-            val imageHeightPixels = imageHeightInput.text.toDouble()
+            val imageWidthPixels = imageWidthInput.text.toDoubleOrNull() ?: 0.0
+            val imageHeightPixels = imageHeightInput.text.toDoubleOrNull() ?: 0.0
 
             val imageRatio = imageWidthPixels.toDouble() / imageHeightPixels.toDouble()
 
