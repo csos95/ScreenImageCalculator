@@ -46,8 +46,9 @@ class App : Application() {
             val screenHeightPixels = screenHeightInput.text.toIntOrNull() ?: 0
 
             val screenRatio = screenWidthPixels.toDouble() / screenHeightPixels.toDouble()
-            val screenWidthMeasurement = screenRatio * Math.sqrt( Math.pow(screenDiagonalMeasurement, 2.0) / (Math.pow(screenRatio, 2.0) + 1 ) )
-            val screenHeightMeasurement = Math.sqrt( Math.pow(screenDiagonalMeasurement, 2.0) / (Math.pow(screenRatio, 2.0) + 1) )
+            val screenIntermediateValue = Math.sqrt(Math.pow(screenDiagonalMeasurement, 2.0) / (Math.pow(screenRatio, 2.0)+1))
+            val screenWidthMeasurement = screenRatio * screenIntermediateValue
+            val screenHeightMeasurement = screenIntermediateValue
 
             val imageWidthPixels = imageWidthInput.text.toDoubleOrNull() ?: 0.0
             val imageHeightPixels = imageHeightInput.text.toDoubleOrNull() ?: 0.0
@@ -59,34 +60,21 @@ class App : Application() {
             val imageWidthMeasurement: Double
             val imageHeightMeasurement: Double
             val imageDiagonalMeasurement: Double
-            if (screenLandscapeRatio > imageLandscapeRatio) {
-                if (screenRatio < 1.0 && imageRatio < 1.0) {
-                    imageWidthMeasurement = screenWidthMeasurement
-                    imageHeightMeasurement = screenWidthMeasurement / imageWidthPixels * imageHeightPixels
-                } else if (screenRatio < 1.0) {
-                    imageHeightMeasurement = screenWidthMeasurement
-                    imageWidthMeasurement = screenWidthMeasurement / imageHeightPixels * imageWidthPixels
-                } else if (imageRatio < 1.0) {
-                    imageWidthMeasurement = screenHeightMeasurement
-                    imageHeightMeasurement = screenHeightMeasurement / imageWidthPixels * imageHeightPixels
-                } else {
-                    imageHeightMeasurement = screenHeightMeasurement
-                    imageWidthMeasurement = screenHeightMeasurement / imageHeightPixels * imageWidthPixels
-                }
+            if ((screenLandscapeRatio > imageLandscapeRatio && screenRatio < 1.0 && imageRatio < 1.0) ||
+                    (screenLandscapeRatio <= imageLandscapeRatio && screenRatio > 1.0 && imageRatio > 1.0)) {
+                imageWidthMeasurement = screenWidthMeasurement
+                imageHeightMeasurement = screenWidthMeasurement / imageWidthPixels * imageHeightPixels
+            } else if ((screenLandscapeRatio > imageLandscapeRatio && screenRatio < 1.0) ||
+                    (screenLandscapeRatio <= imageLandscapeRatio && screenRatio > 1.0)) {
+                imageHeightMeasurement = screenWidthMeasurement
+                imageWidthMeasurement = screenWidthMeasurement / imageHeightPixels * imageWidthPixels
+            } else if ((screenLandscapeRatio > imageLandscapeRatio && imageRatio < 1.0) ||
+                    (screenLandscapeRatio <= imageLandscapeRatio && imageRatio > 1.0)) {
+                imageWidthMeasurement = screenHeightMeasurement
+                imageHeightMeasurement = screenHeightMeasurement / imageWidthPixels * imageHeightPixels
             } else {
-                if (screenRatio > 1.0 && imageRatio > 1.0) {
-                    imageWidthMeasurement = screenWidthMeasurement
-                    imageHeightMeasurement = screenWidthMeasurement / imageWidthPixels * imageHeightPixels
-                } else if (screenRatio > 1.0) {
-                    imageHeightMeasurement = screenWidthMeasurement
-                    imageWidthMeasurement = screenWidthMeasurement / imageHeightPixels * imageWidthPixels
-                } else if (imageRatio > 1.0) {
-                    imageWidthMeasurement = screenHeightMeasurement
-                    imageHeightMeasurement = screenHeightMeasurement / imageWidthPixels * imageHeightPixels
-                } else {
-                    imageHeightMeasurement = screenHeightMeasurement
-                    imageWidthMeasurement = screenHeightMeasurement / imageHeightPixels * imageWidthPixels
-                }
+                imageHeightMeasurement = screenHeightMeasurement
+                imageWidthMeasurement = screenHeightMeasurement / imageHeightPixels * imageWidthPixels
             }
             imageDiagonalMeasurement = Math.sqrt(Math.pow(imageWidthMeasurement, 2.0) + Math.pow(imageHeightMeasurement, 2.0))
 

@@ -1,3 +1,4 @@
+//This package isn't really necessary, but is to experiment with kotlin extension functions
 package com.csos95.ScreenImageCalculator.Extensions
 
 import javafx.event.ActionEvent
@@ -11,10 +12,10 @@ fun GridPane.addLabel(title: String, x: Int = 0, y: Int = 0, width: Int = 1, hei
     return label
 }
 
-fun GridPane.addButton(title: String, listener: EventHandler<ActionEvent>, x: Int = 0, y: Int = 0, width: Int = 1, height: Int = 1): Button {
+fun GridPane.addButton(title: String, listener: EventHandler<ActionEvent>, x: Int = 0, y: Int = 0): Button {
     val button = Button(title)
     button.onAction = listener
-    add(button, x, y, width, height)
+    add(button, x, y)
     return button
 }
 
