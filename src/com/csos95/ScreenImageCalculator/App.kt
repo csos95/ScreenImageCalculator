@@ -38,25 +38,29 @@ class App : Application() {
         layout.addLabel("Image Diagonal", x = 0, y = 5)
         val maxImageDiagonal = layout.addLabel("", x = 1, y = 5)
 
-        //this is all really ugly now, but it seems to be correct.
-        //TODO cleanup
         layout.addButton("Calculate", EventHandler {
+            //get screen inputs
             val screenDiagonalMeasurement = screenDiagonalInput.text.toDoubleOrNull() ?: 0.0
             val screenWidthPixels = screenWidthInput.text.toIntOrNull() ?: 0
             val screenHeightPixels = screenHeightInput.text.toIntOrNull() ?: 0
 
+            //calculate screen ration and physical width/height measurements
             val screenRatio = screenWidthPixels.toDouble() / screenHeightPixels.toDouble()
             val screenIntermediateValue = Math.sqrt(Math.pow(screenDiagonalMeasurement, 2.0) / (Math.pow(screenRatio, 2.0)+1))
             val screenWidthMeasurement = screenRatio * screenIntermediateValue
             val screenHeightMeasurement = screenIntermediateValue
 
+            //get image inputs and calculate image ratio
             val imageWidthPixels = imageWidthInput.text.toDoubleOrNull() ?: 0.0
             val imageHeightPixels = imageHeightInput.text.toDoubleOrNull() ?: 0.0
             val imageRatio = imageWidthPixels / imageHeightPixels
 
+            //calculate the landscape ratios (to ensure we are using the largest ratio numbers for screen and image)
             val screenLandscapeRatio = if (screenRatio >= 1.0) screenRatio else 1.0 / screenRatio
             val imageLandscapeRatio = if (imageRatio >= 1.0) imageRatio else 1.0 / imageRatio
 
+            //calculate the image width and height measurements in one of four ways depending on the aspect ratios
+            //of the screen and image
             val imageWidthMeasurement: Double
             val imageHeightMeasurement: Double
             val imageDiagonalMeasurement: Double
@@ -76,8 +80,10 @@ class App : Application() {
                 imageHeightMeasurement = screenHeightMeasurement
                 imageWidthMeasurement = screenHeightMeasurement / imageHeightPixels * imageWidthPixels
             }
+            //calculate the image diagonal measurement
             imageDiagonalMeasurement = Math.sqrt(Math.pow(imageWidthMeasurement, 2.0) + Math.pow(imageHeightMeasurement, 2.0))
 
+            //set it with a cutoff after two decimals
             maxImageDiagonal.text = "%.2f".format(imageDiagonalMeasurement)
         }, x = 0, y = 6)
 
