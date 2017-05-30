@@ -51,15 +51,14 @@ class App : Application() {
 
             val imageWidthPixels = imageWidthInput.text.toDoubleOrNull() ?: 0.0
             val imageHeightPixels = imageHeightInput.text.toDoubleOrNull() ?: 0.0
-
-            val imageRatio = imageWidthPixels.toDouble() / imageHeightPixels.toDouble()
+            val imageRatio = imageWidthPixels / imageHeightPixels
 
             val screenLandscapeRatio = if (screenRatio >= 1.0) screenRatio else 1.0 / screenRatio
             val imageLandscapeRatio = if (imageRatio >= 1.0) imageRatio else 1.0 / imageRatio
 
-            var imageWidthMeasurement = 0.0
-            var imageHeightMeasurement = 0.0
-            var imageDiagonalMeasurement = 0.0
+            val imageWidthMeasurement: Double
+            val imageHeightMeasurement: Double
+            val imageDiagonalMeasurement: Double
             if (screenLandscapeRatio > imageLandscapeRatio) {
                 if (screenRatio < 1.0 && imageRatio < 1.0) {
                     imageWidthMeasurement = screenWidthMeasurement
